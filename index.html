@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meu Receptor Web</title>
+    <style>
+        /* Aqui vai o código CSS para deixar tudo bonitão! */
+        body {
+            font-family: sans-serif;
+            background-color: #222; /* Fundo escuro como um receptor */
+            color: #eee; /* Texto claro */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tela-tv {
+            background-color: #000; /* Tela preta */
+            width: 640px; /* Largura da tela */
+            height: 360px; /* Altura da tela */
+            margin-bottom: 20px;
+            border: 2px solid #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        .lista-canais {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .canal {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .canal:hover {
+            background-color: #555;
+        }
+
+        .controles {
+            display: flex;
+            gap: 10px;
+        }
+
+        .botao {
+            background-color: #444;
+            color: #eee;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .botao:hover {
+            background-color: #666;
+        }
+
+        .info-canal {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meu Receptor Web</h1>
+
+    <div class="tela-tv">
+        <p>Tela do Canal</p>
+    </div>
+
+    <div class="lista-canais">
+        <h2>Canais</h2>
+        <div id="canais">
+            <div class="canal" data-url="https://video01.soultv.com.br/cnnbrasil/cnnbrasil/chunklist_w1494668448.m3u8" data-nome="CNN Brasil">CNN Brasil</div>
+            <div class="canal" data-url="#">Canal 2 (exemplo)</div>
+            <div class="canal" data-url="#">Canal 3 (exemplo)</div>
+            </div>
+    </div>
+
+    <div class="controles">
+        <button class="botao" id="canal-anterior">Canal Anterior</button>
+        <button class="botao" id="canal-proximo">Próximo Canal</button>
+    </div>
+
+    <div class="info-canal" id="info-canal">
+        Nenhum canal selecionado.
+    </div>
+
+    <script>
+        // Aqui vai o código JavaScript para fazer os botões e a troca de canal funcionar!
+        const telaTv = document.querySelector('.tela-tv');
+        const listaCanais = document.getElementById('canais');
+        const botoesCanal = document.querySelectorAll('.canal');
+        const botaoAnterior = document.getElementById('canal-anterior');
+        const botaoProximo = document.getElementById('canal-proximo');
+        const infoCanal = document.getElementById('info-canal');
+
+        let canalAtualIndex = -1; // Começa sem nenhum canal selecionado
+
+        function mostrarCanal(index) {
+            if (index >= 0 && index < botoesCanal.length) {
+                canalAtualIndex = index;
+                const canalSelecionado = botoesCanal[canalAtualIndex];
+                const urlCanal = canalSelecionado.dataset.url;
+                const nomeCanal = canalSelecionado.dataset.nome;
+
+                telaTv.innerHTML = `<iframe width="640" height="360" src="${urlCanal}" frameborder="0" allowfullscreen></iframe>`;
+                infoCanal.textContent = `Você está assistindo: ${nomeCanal}`;
+            } else {
+                telaTv.innerHTML = '<p>Tela do Canal</p>';
+                infoCanal.textContent = 'Nenhum canal selecionado.';
+                canalAtualIndex = -1;
+            }
+        }
+
+        botoesCanal.forEach((canal, index) => {
+            canal.addEventListener('click', () => {
+                mostrarCanal(index);
+            });
+        });
+
+        botaoAnterior.addEventListener('click', () => {
+            mostrarCanal(canalAtualIndex - 1);
+        });
+
+        botaoProximo.addEventListener('click', () => {
+            mostrarCanal(canalAtualIndex + 1);
+        });
+    </script>
+</body>
+</html>
